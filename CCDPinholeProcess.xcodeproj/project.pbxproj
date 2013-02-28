@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6C1202AD16DFA4AF00690295 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C1202AC16DFA4AF00690295 /* main.cpp */; };
 		6C1202AF16DFA4AF00690295 /* CCDPinholeProcess.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C1202AE16DFA4AF00690295 /* CCDPinholeProcess.1 */; };
+		6C1202B616DFA5A700690295 /* CCDPinholeProcessMain in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C1202A916DFA4AF00690295 /* CCDPinholeProcessMain */; };
+		6C1202B816DFA5DE00690295 /* PinholeMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C1202B716DFA5DE00690295 /* PinholeMain.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,12 +23,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		6C1202B516DFA54E00690295 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /Users/shamim/Documents/Code/SPEDXSim/CCDPinholeProcess;
+			dstSubfolderSpec = 0;
+			files = (
+				6C1202B616DFA5A700690295 /* CCDPinholeProcessMain in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6C1202A916DFA4AF00690295 /* CCDPinholeProcess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CCDPinholeProcess; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C1202AC16DFA4AF00690295 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		6C1202A916DFA4AF00690295 /* CCDPinholeProcessMain */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CCDPinholeProcessMain; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C1202AE16DFA4AF00690295 /* CCDPinholeProcess.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CCDPinholeProcess.1; sourceTree = "<group>"; };
+		6C1202B716DFA5DE00690295 /* PinholeMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PinholeMain.cpp; sourceTree = SOURCE_ROOT; };
+		6C1202BC16DFA5F600690295 /* AbsorbCoeffData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbsorbCoeffData.h; sourceTree = "<group>"; };
+		6C1202BD16DFA5F600690295 /* CCD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCD.h; sourceTree = "<group>"; };
+		6C1202BE16DFA5F600690295 /* FileReading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileReading.h; sourceTree = "<group>"; };
+		6C1202BF16DFA5F600690295 /* FormFactorData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FormFactorData.h; sourceTree = "<group>"; };
+		6C1202C016DFA5F600690295 /* LatticePlane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LatticePlane.h; sourceTree = "<group>"; };
+		6C1202C116DFA5F600690295 /* PowderDiffraction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PowderDiffraction.h; sourceTree = "<group>"; };
+		6C1202C216DFA5F600690295 /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
+		6C1202C316DFA5F600690295 /* XRay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XRay.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +63,7 @@
 		6C1202A016DFA4AF00690295 = {
 			isa = PBXGroup;
 			children = (
+				6C1202B916DFA5F600690295 /* Include */,
 				6C1202AB16DFA4AF00690295 /* CCDPinholeProcess */,
 				6C1202AA16DFA4AF00690295 /* Products */,
 			);
@@ -52,7 +72,7 @@
 		6C1202AA16DFA4AF00690295 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6C1202A916DFA4AF00690295 /* CCDPinholeProcess */,
+				6C1202A916DFA4AF00690295 /* CCDPinholeProcessMain */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,30 +80,47 @@
 		6C1202AB16DFA4AF00690295 /* CCDPinholeProcess */ = {
 			isa = PBXGroup;
 			children = (
-				6C1202AC16DFA4AF00690295 /* main.cpp */,
+				6C1202B716DFA5DE00690295 /* PinholeMain.cpp */,
 				6C1202AE16DFA4AF00690295 /* CCDPinholeProcess.1 */,
 			);
 			path = CCDPinholeProcess;
 			sourceTree = "<group>";
 		};
+		6C1202B916DFA5F600690295 /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				6C1202BC16DFA5F600690295 /* AbsorbCoeffData.h */,
+				6C1202BD16DFA5F600690295 /* CCD.h */,
+				6C1202BE16DFA5F600690295 /* FileReading.h */,
+				6C1202BF16DFA5F600690295 /* FormFactorData.h */,
+				6C1202C016DFA5F600690295 /* LatticePlane.h */,
+				6C1202C116DFA5F600690295 /* PowderDiffraction.h */,
+				6C1202C216DFA5F600690295 /* Vector.h */,
+				6C1202C316DFA5F600690295 /* XRay.h */,
+			);
+			name = Include;
+			path = ../../Include;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6C1202A816DFA4AF00690295 /* CCDPinholeProcess */ = {
+		6C1202A816DFA4AF00690295 /* CCDPinholeProcessMain */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6C1202B216DFA4AF00690295 /* Build configuration list for PBXNativeTarget "CCDPinholeProcess" */;
+			buildConfigurationList = 6C1202B216DFA4AF00690295 /* Build configuration list for PBXNativeTarget "CCDPinholeProcessMain" */;
 			buildPhases = (
 				6C1202A516DFA4AF00690295 /* Sources */,
 				6C1202A616DFA4AF00690295 /* Frameworks */,
 				6C1202A716DFA4AF00690295 /* CopyFiles */,
+				6C1202B516DFA54E00690295 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = CCDPinholeProcess;
+			name = CCDPinholeProcessMain;
 			productName = CCDPinholeProcess;
-			productReference = 6C1202A916DFA4AF00690295 /* CCDPinholeProcess */;
+			productReference = 6C1202A916DFA4AF00690295 /* CCDPinholeProcessMain */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -107,7 +144,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6C1202A816DFA4AF00690295 /* CCDPinholeProcess */,
+				6C1202A816DFA4AF00690295 /* CCDPinholeProcessMain */,
 			);
 		};
 /* End PBXProject section */
@@ -117,7 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C1202AD16DFA4AF00690295 /* main.cpp in Sources */,
+				6C1202B816DFA5DE00690295 /* PinholeMain.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,7 +164,7 @@
 		6C1202B016DFA4AF00690295 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -160,7 +197,7 @@
 		6C1202B116DFA4AF00690295 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -187,6 +224,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Users/shamim/Documents/Code/Include /Users/shamim/Documents/Code/boost_1_53_0";
 			};
 			name = Debug;
 		};
@@ -194,6 +232,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Users/shamim/Documents/Code/Include /Users/shamim/Documents/Code/boost_1_53_0";
 			};
 			name = Release;
 		};
@@ -209,7 +248,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6C1202B216DFA4AF00690295 /* Build configuration list for PBXNativeTarget "CCDPinholeProcess" */ = {
+		6C1202B216DFA4AF00690295 /* Build configuration list for PBXNativeTarget "CCDPinholeProcessMain" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6C1202B316DFA4AF00690295 /* Debug */,
