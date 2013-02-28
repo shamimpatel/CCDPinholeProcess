@@ -16,6 +16,7 @@ using namespace std;
 
 int main()
 {
+    
     Vector InputCCDOrigin(110,-1,50); //origin of CCD
     Vector InputCCDNormal(0,0,1); //direction that CCD points in.
     double InputCCDAngle = 0;
@@ -170,5 +171,5 @@ int main()
     }
 
     DiffractResults2.close();
-
+    cout << "Done!" << endl;
 }
