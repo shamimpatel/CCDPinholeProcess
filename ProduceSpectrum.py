@@ -4,7 +4,7 @@ import sys;
 
 if(len(sys.argv) != 2):
     print "No input file given! Quitting..."
-    exit();
+    exit(1);
 else:
     FileName = sys.argv[1];
 
