@@ -11,28 +11,33 @@
 
 typedef boost::mt11213b base_generator_type;
 
+#include "FileReading.h"
 
 using namespace std;
 
 int main()
 {
-    
-    Vector InputCCDOrigin(110,-1,50); //origin of CCD
-    Vector InputCCDNormal(0,0,1); //direction that CCD points in.
-    double InputCCDAngle = 0;
 
-    CCD CCDCamera(InputCCDOrigin, InputCCDNormal, InputCCDAngle,
-                  0.05, 0.05,
-                  0.0,0.0,
-                  0.0,0.0);
+    ifstream datafile("InputScript.txt");
+    if(datafile.is_open() == false)
+    {
+        cout << "Error: Failed to open InputScript.txt" << endl;
+        exit(1);
+    }
+    std::map<std::string,std::string> InputData;
+    AddToMapFromFile(datafile, InputData);
+    datafile.close();
+    
+   
+    CCD CCDCamera = GenerateCCDFromInputScript("InputScript.txt");
 
     base_generator_type generator(48u);
     boost::uniform_real<> uni_dist(0,1);
     boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
 
 
-    AbsorbCoeffData TaMuData( 1.0f, 15.0f, 2000);
-    TaMuData.LoadData("FeAbsorbCoeff.txt");
+    AbsorbCoeffData MuData( 1.0f, 15.0f, 2000);
+    MuData.LoadData("FeAbsorbCoeff.txt");
 
     ofstream FluoResults2( "FluoResultsPostPinhole.txt" );
 
@@ -45,7 +50,7 @@ int main()
     float FilterThickness = 25000.0; //2.5 micron in A
 
     float Energy = 1.710;
-    float AbsorbCoeff = TaMuData.GetAbsorbCoeffDataPoint(EnergyToWavelength(Energy));
+    float AbsorbCoeff = MuData.GetAbsorbCoeffDataPoint(EnergyToWavelength(Energy));
 
     double RayLength;
     Vector IntersectPoint;
@@ -122,7 +127,7 @@ int main()
         stringstream linestream(dataline);
         linestream >> Source.x >> Source.y >> Direction.x >> Direction.y >> Direction.z >> Energy;
 
-        AbsorbCoeff = TaMuData.GetAbsorbCoeffDataPoint(EnergyToWavelength(Energy));
+        AbsorbCoeff = MuData.GetAbsorbCoeffDataPoint(EnergyToWavelength(Energy));
 
         double CosTheta = fabs(Direction.Dot(FilterNormal)); //fabs for anti-parallel.
 
