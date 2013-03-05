@@ -176,5 +176,22 @@ int main()
     }
 
     DiffractResults2.close();
+    
+    ofstream CCDBounds( "CCDBounds.txt" );
+    
+    int numXPixels, numYPixels;
+    
+    IntFromMap("CCDNumXPixels", InputData, numXPixels);
+    IntFromMap("CCDNumYPixels", InputData, numYPixels);
+    
+    CCDBounds << "0\t0" << endl;
+    CCDBounds << "0\t"  << numYPixels << endl;
+    CCDBounds << numXPixels << "\t" << numYPixels << endl;
+    CCDBounds << numXPixels << "\t0"    << endl;
+    CCDBounds << "0\t0" << endl; //need to complete the loop
+    
+    CCDBounds.close();
+
+    
     cout << "Done!" << endl;
 }
