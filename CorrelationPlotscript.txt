@@ -1,0 +1,14 @@
+set term pdf
+set xlabel 'xPixel'
+
+set ylabel 'Energy (keV)'
+
+
+#set yrange [8.9:9.0]
+#set yrange [4.0:4.1]
+
+set output "CorrelationPlot.pdf"
+unset key
+plot "DiffractResultsPostPinhole.txt" using 1:($3 > 1 ? $3 : 1/0) with points pt 1 ps 0.2, "CCDSpectrum.txt" using 1:($3 > 1 ? $3 : 1/0) with points pt 2 ps 0.2
+	
+	
