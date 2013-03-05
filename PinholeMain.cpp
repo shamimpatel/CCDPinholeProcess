@@ -4,6 +4,7 @@
 #include "XRay.h"
 
 #include "CCD.h"
+#include "Pinhole.h"
 
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real.hpp>
@@ -30,6 +31,22 @@ int main()
     
    
     CCD CCDCamera = GenerateCCDFromInputScript("InputScript.txt");
+    
+    Vector PinholeOrigin(1.39895,0,0.3497);
+    Vector PinholeNormal(40,0,10);
+    PinholeNormal = PinholeNormal.Normalized();
+    
+    double PinholeDistance;
+    DoubleFromMap("TempPinholeDistance", InputData, PinholeDistance);
+    
+    PinholeOrigin = PinholeNormal*PinholeDistance;
+    PinholeOrigin.Print();
+    
+    double PinholeRadius = 0.5;
+    
+    DoubleFromMap("PinholeRadius", InputData, PinholeRadius);
+    
+    PinholePlane Pinhole( PinholeOrigin, PinholeNormal, PinholeRadius);
 
     base_generator_type generator(48u);
     boost::uniform_real<> uni_dist(0,1);
@@ -93,8 +110,10 @@ int main()
                                                  XIntersect,YIntersect,
                                                  XPixel,YPixel) == true)
             {
-                //FluoResults2 << XIntersect  << "\t" << YIntersect << endl;
-                FluoResults2 << XPixel  << "\t" << YPixel << endl;
+                if(Pinhole.TestRayPinholeIntersect(Source, Direction, RayLength, IntersectPoint))
+                {                
+                    FluoResults2 << XPixel  << "\t" << YPixel << endl;
+                }
             }
         }
         else if(uni() < 0.0063*0.5) //fluorescence yield approx 0.0063 (http://www.nist.gov/data/PDFfiles/jpcrd473.pdf)
@@ -108,7 +127,11 @@ int main()
                                                  XIntersect,YIntersect,
                                                  XPixel,YPixel) == true)
             {
-                FluoResults2 << XPixel  << "\t" << YPixel << endl;
+                //FluoResults2 << XPixel  << "\t" << YPixel << endl;
+                if(Pinhole.TestRayPinholeIntersect(Source, Direction, RayLength, IntersectPoint))
+                {
+                    FluoResults2 << XPixel  << "\t" << YPixel << endl;
+                }
             }
         }
     }
@@ -147,30 +170,29 @@ int main()
 
         if(uni() < ProbTransmit)
         {
-            /*double CCDIntersectX = Source.x + ((50.0-Source.z)/(Direction.z))*Direction.x;
-            double CCDIntersectY = Source.y + ((50.0-Source.z)/(Direction.z))*Direction.y;
-            DiffractResults2 << CCDIntersectX  << "\t" << CCDIntersectY << "\t" << Energy << endl;*/
             if(CCDCamera.GetPixelRayCCDIntersect(Source,Direction,
                                                  RayLength,IntersectPoint,
                                                  XIntersect,YIntersect,
                                                  XPixel,YPixel) == true)
             {
-                //DiffractResults2 << XIntersect  << "\t" << YIntersect << "\t" << Energy << endl;
-                DiffractResults2 << XPixel  << "\t" << YPixel << "\t" << Energy << endl;
+                if(Pinhole.TestRayPinholeIntersect(Source, Direction, RayLength, IntersectPoint))
+                {
+                    DiffractResults2 << XPixel  << "\t" << YPixel << "\t" << Energy << endl;
+                }                
             }
         }
         else if(uni() < 0.0063*0.5) //fluorescence yield
         {
-            /*double CCDIntersectX = Source.x + ((50.0-Source.z)/(Direction.z))*Direction.x;
-            double CCDIntersectY = Source.y + ((50.0-Source.z)/(Direction.z))*Direction.y;
-            DiffractResults2 << CCDIntersectX  << "\t" << CCDIntersectY << "\t" << 0.7 << endl;*/
             if(CCDCamera.GetPixelRayCCDIntersect(Source,Direction,
                                                  RayLength,IntersectPoint,
                                                  XIntersect,YIntersect,
                                                  XPixel,YPixel) == true)
             {
-                //DiffractResults2 << XIntersect  << "\t" << YIntersect << "\t" << 0.7 << endl;
-                DiffractResults2 << XPixel  << "\t" << YPixel << "\t" << 0.7 << endl;
+                if(Pinhole.TestRayPinholeIntersect(Source, Direction, RayLength, IntersectPoint))
+                {
+                    DiffractResults2 << XPixel  << "\t" << YPixel << "\t" << 0.7 << endl;
+                }
+                //DiffractResults2 << XPixel  << "\t" << YPixel << "\t" << 0.7 << endl;
             }
         }
     }

@@ -47,6 +47,7 @@
 		6C1202C116DFA5F600690295 /* PowderDiffraction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PowderDiffraction.h; sourceTree = "<group>"; };
 		6C1202C216DFA5F600690295 /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		6C1202C316DFA5F600690295 /* XRay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XRay.h; sourceTree = "<group>"; };
+		6C1202C416E62FA300690295 /* Pinhole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pinhole.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +92,7 @@
 			children = (
 				6C1202BC16DFA5F600690295 /* AbsorbCoeffData.h */,
 				6C1202BD16DFA5F600690295 /* CCD.h */,
+				6C1202C416E62FA300690295 /* Pinhole.h */,
 				6C1202BE16DFA5F600690295 /* FileReading.h */,
 				6C1202BF16DFA5F600690295 /* FormFactorData.h */,
 				6C1202C016DFA5F600690295 /* LatticePlane.h */,
