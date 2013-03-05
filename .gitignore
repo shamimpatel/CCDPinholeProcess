@@ -163,6 +163,11 @@ pip-log.txt
 .DS_Store
 
 #random stuff
-*.txt
 *.pdf
+AdvDiffractResults.txt
+AdvFluoResults.txt
+CCDBounds.txt
+CCDSpectrum.txt
+DiffractResultsPostPinhole.txt
+FluoResultsPostPinhole.txt
 CCDPinholeProcessMain
