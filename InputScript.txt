@@ -11,7 +11,7 @@ Source		-3,0,5
 MinEnergy	3
 MaxEnergy	9
 DeltaE		0.0005
-Repeats		5000
+Repeats		20000
 RockingCurve	0
 CrystalOrigin	-0.05,-0.05,0
 CrystalXLength	0.1
@@ -24,6 +24,6 @@ TempSourceDeltaY	0.01
 CCDNumXPixels	20048
 CCDNumYPixels	20048
 PinholeRadius	0.01
-TempPinholeDistance	1.0
+TempPinholeDistance	1.00
 FlipXAxis	0
 FlipYAxis	0
