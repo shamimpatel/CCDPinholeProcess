@@ -5,9 +5,9 @@ set ylabel 'yPixel'
 
 set zlabel 'Energy (keV)'
 
-set zrange [7.494:7.9315]
-set cbrange [7.7:7.91]
-set palette defined (7.7 "red", 7.7 "red", 7.75 "blue", 7.91 "blue")
+set zrange [7.5:8]
+set cbrange [7.628:7.7785]
+set palette defined (7.628 "red", 7.73 "red", 7.7785 "blue", 7.7785 "blue")
 
 set view map
 #set cbrange [4.429:8.9995]
@@ -16,6 +16,6 @@ set view map
 set output "CCDPlot.pdf"
 unset key
 splot "DiffractResultsPostPinhole.txt" using 1:2:3 with points palette pt 6 ps 0.8, \
-	"FluoResultsPostPinhole.txt" using 1:2:(5) with points pt 2 ps 1 linecolor rgb "green", \
-	"CCDBounds.txt" using 1:2:(7.5) with lines linecolor rgb "black"
+	"FluoResultsPostPinhole.txt" using 1:2:(7.8) with points pt 2 ps 1 linecolor rgb "green", \
+	"CCDBounds.txt" using 1:2:(7.8) with lines linecolor rgb "black"
 	

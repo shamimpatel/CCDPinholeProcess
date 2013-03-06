@@ -34,6 +34,9 @@ int main()
     
     Vector PinholeOrigin(1.39895,0,0.3497);
     Vector PinholeNormal(40,0,10);
+    
+    VectorFromMap("CCDNormal", InputData, PinholeNormal);
+    
     PinholeNormal = PinholeNormal.Normalized();
     
     double PinholeDistance;
@@ -177,7 +180,8 @@ int main()
             {
                 if(Pinhole.TestRayPinholeIntersect(Source, Direction, RayLength, IntersectPoint))
                 {
-                    DiffractResults2 << XPixel  << "\t" << YPixel << "\t" << Energy << endl;
+                    DiffractResults2    << XPixel  << "\t" << YPixel << "\t"
+                                        << Energy << "\t" << Source.x << endl;
                 }                
             }
         }

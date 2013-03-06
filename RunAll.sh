@@ -1,8 +1,8 @@
 ./CCDPinholeProcessMain || exit 1
-sleep 1s
+sleep 0.5s
 ./PlotCCD.sh
 python ProduceSpectrum.py DiffractResultsPostPinhole.txt || exit 1
-sleep 1s
+sleep 0.5s
 ./PlotSpectrum.sh
-sleep 1s
+sleep 0.5s
 ./CorrelationPlot.sh
