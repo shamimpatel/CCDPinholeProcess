@@ -171,3 +171,5 @@ CCDSpectrum.txt
 DiffractResultsPostPinhole.txt
 FluoResultsPostPinhole.txt
 CCDPinholeProcessMain
+DiffractionPeakLimits.txt
+PixelatedCCDSpectrum.txt
