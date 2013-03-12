@@ -11,7 +11,7 @@ set output "Spectrum.pdf"
 unset key
 
 
-n=400	#number of intervals
+n=300	#number of intervals
 max=9.	#max value
 min=3.	#min value
 width=(max-min)/n	#interval width
@@ -30,4 +30,4 @@ set style fill solid 0.5	#fillstyle
 set tics out nomirror
 
 #count and plot
-plot "CCDSpectrum.txt" u (hist($3,width)):(1.0) smooth freq w boxes lc rgb"green"
+plot "PixelatedCCDSpectrum.txt" u (hist($3,width)):(1.0) smooth freq w boxes lc rgb"green"
