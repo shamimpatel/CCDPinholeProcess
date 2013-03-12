@@ -31,7 +31,7 @@ remove 2.355 for sigma instead of FWHM
 
 Outfile = open('CCDSpectrum.txt', 'w')
 
-w = 3.65;
+w = 3.65; #in eV not keV
 r = 3;
 F = 0.117;
 
