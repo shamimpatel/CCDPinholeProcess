@@ -1,4 +1,5 @@
 import numpy.random;
+from scipy.sparse import *
 import math;
 import sys;
 
@@ -81,9 +82,8 @@ F = 0.117;
 
 Outfile = open('PixelatedCCDSpectrum.txt', 'w')
     
-for x in range(numXPixels):
-    CCDArray.append([]);
-    for y in range(numYPixels):
+for y in range(numYPixels):
+    for x in range(numXPixels):
         if( CCDArray[x][y] > 0.0):
             Energy = CCDArray[x][y]*1000; #energy in ev
             Stdev = w*math.sqrt( r*r + (F*Energy)/w );

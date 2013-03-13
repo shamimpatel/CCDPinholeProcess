@@ -16,7 +16,7 @@ typedef boost::mt11213b base_generator_type;
 
 using namespace std;
 
-int main()
+int main(int argc, char *argv[])
 {
 
     ifstream datafile("InputScript.txt");
@@ -41,14 +41,25 @@ int main()
     
     double PinholeDistance;
     DoubleFromMap("TempPinholeDistance", InputData, PinholeDistance);
+        
+    double PinholeRadius = 0.5;    
+    DoubleFromMap("PinholeRadius", InputData, PinholeRadius);
+    
+    
+    //optional override so that pinhole parameters can be modified without changing the input script
+    //TODO: use switches/flags instead of just reading in order
+    if(argc == 3)
+    {        
+        std::stringstream S1(argv[1]);
+        S1 >> PinholeRadius;
+        std::stringstream S2(argv[2]);
+        S2 >> PinholeDistance;        
+    }   
+    
     
     PinholeOrigin = PinholeNormal*PinholeDistance;
     PinholeOrigin.Print();
-    
-    double PinholeRadius = 0.5;
-    
-    DoubleFromMap("PinholeRadius", InputData, PinholeRadius);
-    
+        
     PinholePlane Pinhole( PinholeOrigin, PinholeNormal, PinholeRadius);
 
     base_generator_type generator(48u);
@@ -64,12 +75,13 @@ int main()
     ifstream FluoFile("AdvFluoResults.txt");
     string dataline;
 
-    Vector FilterNormal( 112.0, 0, 50.0);
+    Vector FilterNormal = PinholeNormal;
     FilterNormal = FilterNormal.Normalized();
 
-    float FilterThickness = 25000.0; //2.5 micron in A
+    double FilterThickness = 25000.0; //2.5 micron in A
+    DoubleFromMap("FilterThickness", InputData, FilterThickness);
 
-    float Energy = 1.710;
+    float Energy = 1.710; //M shell fluorescence energy
     float AbsorbCoeff = MuData.GetAbsorbCoeffDataPoint(EnergyToWavelength(Energy));
 
     double RayLength;
