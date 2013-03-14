@@ -1,14 +1,3 @@
-#./CCDPinholeProcessMain || exit 1
-#sleep 0.5s
-#./PlotCCD.sh
-#python ProduceSpectrum.py DiffractResultsPostPinhole.txt || exit 1
-#python ProduceBinnedSpectrum.py
-#sleep 0.5s
-#./PlotSpectrum.sh
-#sleep 0.5s
-#./CorrelationPlot.sh
-#python2.7 CalculateCorrelations.py
-
 import os;
 
 minDistance = 0.00001;
@@ -33,6 +22,6 @@ for DistanceCounter in range( int(( maxDistance - minDistance )/DistanceStep) ):
         Distance = minDistance + DistanceStep*DistanceCounter;
         Radius = minRadius + RadiusStep*RadiusCounter;
         os.system( "./CCDPinholeProcessMain " + str(Radius) + " " + str(Distance) + " >/dev/null" )
-        os.system( "python2.7 CalculateCorrelations.py " + str(Radius) + " " + str(Distance) )
+        os.system( "python2.7 CalculateCorrelations.py " + str(Radius) + " " + str(Distance) + " >/dev/null" )
     Progress = 100.0 * float(DistanceCounter)/int(( maxDistance - minDistance )/DistanceStep)
     print str(Progress) + "%"

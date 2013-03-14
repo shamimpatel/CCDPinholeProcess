@@ -28,4 +28,4 @@ TempPinholeDistance	1.0
 FlipXAxis	0
 FlipYAxis	0
 SpectrumData	SourceSpectrum.txt
-FilterThickness	25000.0
+FilterThickness		0.0
