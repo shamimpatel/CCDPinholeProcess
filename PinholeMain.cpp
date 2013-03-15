@@ -108,17 +108,22 @@ int main(int argc, char *argv[])
             //continue; //Just throw it away instead?? Depends on geometry
         }
         else
-        {
+        {            
             PathLength = FilterThickness/CosTheta;
         }
 
         double ProbTransmit = exp( -1.0f * AbsorbCoeff * PathLength);
+        
+        if(FilterThickness > 0.0)
+        {
+            ProbTransmit = 2.0; //guarantee transmission
+        }
 
         //Don't combine these. It very slightly boosts the fluorescence. This first one *must* fail (ie not transmit) in order to test for fluorescence.
         if(uni() < ProbTransmit)
         {
-            /*double CCDIntersectX = Source.x + ((50.0-Source.z)/(Direction.z))*Direction.x;
-            double CCDIntersectY = Source.y + ((50.0-Source.z)/(Direction.z))*Direction.y;*/
+            //double CCDIntersectX = Source.x + ((50.0-Source.z)/(Direction.z))*Direction.x;
+            //double CCDIntersectY = Source.y + ((50.0-Source.z)/(Direction.z))*Direction.y;
 
             if(CCDCamera.GetPixelRayCCDIntersect(Source,Direction,
                                                  RayLength,IntersectPoint,
@@ -157,11 +162,12 @@ int main(int argc, char *argv[])
 
     ofstream DiffractResults2( "DiffractResultsPostPinhole.txt" );
 
+    Vector Source(0,0,0);
+    Vector Direction(0,0,0);
+    
+    
     while(getline(DiffractFile, dataline, '\n'))
     {
-        Vector Source(0,0,0);
-        Vector Direction(0,0,0);
-
         stringstream linestream(dataline);
         linestream >> Source.x >> Source.y >> Direction.x >> Direction.y >> Direction.z >> Energy;
 
@@ -182,6 +188,11 @@ int main(int argc, char *argv[])
         }
 
         double ProbTransmit = exp( -1.0f * AbsorbCoeff * PathLength);
+        
+        if(FilterThickness > 0.0)
+        {
+            ProbTransmit = 2.0; //guarantee transmission
+        }
 
         if(uni() < ProbTransmit)
         {
@@ -197,7 +208,7 @@ int main(int argc, char *argv[])
                 }                
             }
         }
-        else if(uni() < 0.0063*0.5) //fluorescence yield
+        else if(uni() < 0.0063*0.5) //fluorescence yield for iron
         {
             if(CCDCamera.GetPixelRayCCDIntersect(Source,Direction,
                                                  RayLength,IntersectPoint,
