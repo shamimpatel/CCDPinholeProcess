@@ -52,9 +52,12 @@ for i in range(len(Ranges)):
 	HighEBound = (OriginalRanges[i][1] + OriginalRanges[i+1][0])/2.0
 	Ranges[i][1] = HighEBound
 	
+	
+	
 
-CCDData = [line.split('\t') for line in open("DiffractResultsPostPinhole.txt")];
-
+	
+#CCDData = [line.split('\t') for line in open("DiffractResultsPostPinhole.txt")];
+CCDData = [line.split('\t') for line in open("CCDSpectrum.txt")];
 
 w = 0.00365; #in eV not keV
 r = 3;
@@ -64,12 +67,14 @@ F = 0.117;
 for Range in Ranges:
 #Range = Ranges[2];
 	for line in CCDData:
-		if( Range[0] <= float(line[2]) <= Range[1] ):
-			Range[3].append(int(line[0]))
+		if( Range[0] <= float(line[2]) <= Range[1] ): #if Energy is between min/max energy ranges for this peak
+			Range[3].append(int(line[0])) #add it's xpixel coordinate and energy to the stack
 			Range[4].append(float(line[2]))
 	if(len(Range[3]) > 1 ):
 		mean = numpy.mean(Range[4])
-		print Range[2], "Mean:", mean, "StDev:", numpy.std(Range[4]), "Expected Width:", w*math.sqrt( r*r + (F*mean)/w );
+		width = numpy.std(Range[4])
+		spectralwidth = w*math.sqrt( r*r + (F*mean)/w )
+		print Range[2], "Mean:", mean, "StDev:", width, "Expected Width:", spectralwidth, "Ratio: ", width/spectralwidth;
 	else:
 		print Range[2], "Less than 2 points"
 
