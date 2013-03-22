@@ -29,5 +29,9 @@ set boxwidth width*0.9
 set style fill solid 0.5	#fillstyle
 set tics out nomirror
 
+
+
+
+
 #count and plot
 plot "CCDSpectrum.txt" u (hist($3,width)):(1.0) smooth freq w boxes lc rgb"green"
