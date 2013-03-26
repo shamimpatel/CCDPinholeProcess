@@ -11,7 +11,7 @@ set output "Spectrum.pdf"
 unset key
 
 
-n=300	#number of intervals
+n=600	#number of intervals
 max=9.	#max value
 min=3.	#min value
 width=(max-min)/n	#interval width

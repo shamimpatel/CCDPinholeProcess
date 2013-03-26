@@ -69,7 +69,7 @@ for Range in Ranges:
 	for line in CCDData:
 		if( Range[0] <= float(line[2]) <= Range[1] ): #if Energy is between min/max energy ranges for this peak
 			Range[3].append(int(line[0])) #add it's xpixel coordinate and energy to the stack
-			Range[4].append(float(line[2]))
+			Range[4].append(float(line[2])) #Ener
 	if(len(Range[3]) > 1 ):
 		mean = numpy.mean(Range[4])
 		width = numpy.std(Range[4])

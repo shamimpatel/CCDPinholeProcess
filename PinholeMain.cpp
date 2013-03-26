@@ -66,9 +66,29 @@ int main(int argc, char *argv[])
     boost::uniform_real<> uni_dist(0,1);
     boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
 
+    
+    double MinE = 3.0;//4.23;
+    double MaxE = 9.0;//4.28;
+        
+    DoubleFromMap("MinEnergy", InputData, MinE);
+    DoubleFromMap("MaxEnergy", InputData, MaxE);
+    
+    double MinWavelength = EnergyToWavelength(MaxE); MinWavelength -= MinWavelength*0.02;
+    double MaxWavelength = EnergyToWavelength(MinE);
+    
+    if( MaxWavelength < EnergyToWavelength(1.710) )
+    {
+        MaxWavelength = EnergyToWavelength(1.170);
+    }
+    
+    MaxWavelength += MaxWavelength*0.02;
+    
+    AbsorbCoeffData MuData( MinWavelength, MaxWavelength, 1, 5000, "FeAbsorbCoeff.txt");
+    
 
-    AbsorbCoeffData MuData( 1.0f, 15.0f, 2000);
-    MuData.LoadData("FeAbsorbCoeff.txt");
+    //AbsorbCoeffData MuData( 1.0f, 15.0f, 5000);
+    //MuData.LoadData("FeAbsorbCoeff.txt");
+    
 
     ofstream FluoResults2( "FluoResultsPostPinhole.txt" );
 
