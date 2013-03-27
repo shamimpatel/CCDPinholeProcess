@@ -53,7 +53,6 @@ for i in range(len(Ranges)):
 	Ranges[i][1] = HighEBound
 	
 	
-	
 
 	
 #CCDData = [line.split('\t') for line in open("DiffractResultsPostPinhole.txt")];
