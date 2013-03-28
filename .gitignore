@@ -164,13 +164,13 @@ pip-log.txt
 
 #random stuff
 *.pdf
-AdvDiffractResults.txt
-AdvFluoResults.txt
+AdvDiffractResults*.txt
+AdvFluoResults*.txt
 CCDBounds.txt
-CCDSpectrum.txt
-DiffractResultsPostPinhole.txt
-FluoResultsPostPinhole.txt
+CCDSpectrum*.txt
+DiffractResultsPostPinhole*.txt
+FluoResultsPostPinhole*.txt
 CCDPinholeProcessMain
 DiffractionPeakLimits.txt
-PixelatedCCDSpectrum.txt
+PixelatedCCDSpectrum*.txt
 CorrelationData*.txt
