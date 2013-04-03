@@ -223,8 +223,8 @@ int main(int argc, char *argv[])
             {
                 if(Pinhole.TestRayPinholeIntersect(Source, Direction, RayLength, IntersectPoint))
                 {
-                    DiffractResults2    << XPixel  << "\t" << YPixel << "\t"
-                                        << Energy << "\t" << Source.x << endl;
+                    DiffractResults2    << XPixel  << "\t" << YPixel << "\t" << Energy
+										<< "\t" << Source.x << "\t" << Source.y << endl;
                 }                
             }
         }

@@ -49,6 +49,7 @@
 		6C1202C316DFA5F600690295 /* XRay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XRay.h; sourceTree = "<group>"; };
 		6C1202C416E62FA300690295 /* Pinhole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pinhole.h; sourceTree = "<group>"; };
 		6CC6A2A61700BBC000F9D7D8 /* DataLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DataLoader.h; path = /Users/shamim/Documents/Code/SPEDXSim/TestCode/TestCode/../../../Include/DataLoader.h; sourceTree = "<absolute>"; };
+		6CEDBC37170C27440033A517 /* DataLoader.h */ = {isa = PBXFileReference; lastKnownFileType = file; path = DataLoader.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +93,7 @@
 		6C1202B916DFA5F600690295 /* Include */ = {
 			isa = PBXGroup;
 			children = (
+				6CEDBC37170C27440033A517 /* DataLoader.h */,
 				6C1202BC16DFA5F600690295 /* AbsorbCoeffData.h */,
 				6C1202BD16DFA5F600690295 /* CCD.h */,
 				6C1202C416E62FA300690295 /* Pinhole.h */,
