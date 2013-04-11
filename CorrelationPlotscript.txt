@@ -1,4 +1,4 @@
-set term pdf
+set term png size 1280,1024
 set xlabel 'xPixel'
 
 set ylabel 'Energy (keV)'
@@ -7,9 +7,8 @@ set ylabel 'Energy (keV)'
 #set yrange [8.9:9.0]
 #set yrange [4.0:4.1]
 
-set output "CorrelationPlot.pdf"
+set output "CorrelationPlot.png"
 unset key
-plot "DiffractResultsPostPinhole.txt" using 1:3 with points pt 1 ps 0.2, "CCDSpectrum.txt" using 1:3 with points pt 2 ps 0.2,\
-	"FluoResultsPostPinhole.txt" using 1:(1.71) with points pt 1 ps 0.2
-	
+plot "DiffractResultsPostPinhole.txt" using 1:3 with points pt 1 ps 0.2, "CCDSpectrumDiffract.txt" using 1:3 with points pt 2 ps 0.2, "CCDSpectrumFluo.txt" using 1:3 with points pt 2 ps 0.2	
+
 	

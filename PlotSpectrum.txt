@@ -34,4 +34,4 @@ set tics out nomirror
 
 
 #count and plot
-plot "CCDSpectrum.txt" u (hist($3,width)):(1.0) smooth freq w boxes lc rgb"green"
+plot "CCDSpectrumDiffract.txt" u (hist($3,width)):(1.0) smooth freq w boxes lc rgb"green", "CCDSpectrumFluo.txt" u (hist($3,width)):(1.0) smooth freq w boxes lc rgb"blue"

@@ -56,9 +56,9 @@ for i in range(len(Ranges)):
 
 	
 #CCDData = [line.split('\t') for line in open("DiffractResultsPostPinhole.txt")];
-CCDData = [line.split('\t') for line in open("CCDSpectrum.txt")];
+CCDData = [line.split('\t') for line in open("CCDSpectrumDiffract.txt")];
 
-w = 0.00365; #in eV not keV
+w = 0.00365; #in keV
 r = 3;
 F = 0.117;
 
