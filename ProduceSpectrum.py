@@ -100,7 +100,7 @@ for line in open("DiffractResultsPostPinhole.txt"):
 		
 		Stdev = w*math.sqrt( r*r + (F*Energy)/w );
 		RandomE = numpy.random.normal( Energy, Stdev);
-		Outfile.write( XRay[0] + '\t' + XRay[1] + '\t' + str(RandomE/1000.0) + '\n');
+		Outfile.write( XRay[0] + '\t' + XRay[1] + '\t' + str(RandomE/1000.0) + '\t' + str(float(XRay[3])) + '\n');
 		nOutputPhotons = nOutputPhotons+1;
 
 Outfile.close()
@@ -120,7 +120,7 @@ for line in open("FluoResultsPostPinhole.txt"):
 		
 		Stdev = w*math.sqrt( r*r + (F*Energy)/w );
 		RandomE = numpy.random.normal( Energy, Stdev);
-		Outfile.write( XRay[0] + '\t' + XRay[1] + '\t' + str(RandomE/1000.0) + '\n');
+		Outfile.write( XRay[0] + '\t' + XRay[1] + '\t' + str(RandomE/1000.0) + '\t' + str(float(XRay[3])) + '\n');
 		nOutputPhotons = nOutputPhotons+1;
 		
 print "Number lost to QE: ", nEfficiencyFailed

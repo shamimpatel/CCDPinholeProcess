@@ -42,7 +42,7 @@ for i in range(len(Ranges)):
 		break;
 	
 	if(i == 0):
-		Ranges[i][0] = 1;
+		Ranges[i][0] = 2;
 		HighEBound = (OriginalRanges[i][1] + OriginalRanges[i+1][0])/2.0
 		Ranges[i][1] = HighEBound
 		continue; #this sorts the lower energy bound for the lowest energy peak
