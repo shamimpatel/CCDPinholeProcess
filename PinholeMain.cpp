@@ -45,14 +45,15 @@ private:
 		double BlurEnergy;
 		bool PassPinhole;
 		int PlaneId;
+		bool bIsNoise;
 	};
 	
 	
 	std::vector< Ray > XRays;
-
+	AbsorbCoeffDataEnergy* FilterAbsorbData;
 public:
 	
-	PinholeFileParser( const char* FileName, CCD* CCDCamera)
+	PinholeFileParser( const char* FileName, CCD* CCDCamera, AbsorbCoeffDataEnergy* FilterAbsorbData, double FilterThickness)
 	{
 		ifstream DataFile;
 		DataFile.open(FileName, ios::in);
@@ -75,6 +76,31 @@ public:
 			int XPixel, YPixel;
 			Vector IntersectPoint;
 			
+			/*double AbsorbCoeff = FilterAbsorbData->GetAbsorbCoeffDataPoint(EnergyToWavelength(Energy));
+			
+			double CosTheta = fabs(Direction.Dot(CCDCamera->CCDNormal)); //fabs for anti-parallel.
+			
+			double PathLength; //effective thickness of crystal given angle of xray to filter
+			
+			if(CosTheta <= 0.001) //handle divide by zero.
+			{
+				PathLength = 0.0; //just say it passes through.
+				//continue; //Just throw it away instead?? Depends on geometry
+			}
+			else
+			{
+				PathLength = FilterThickness/CosTheta;
+			}
+			
+			double ProbTransmit = exp( -1.0f * AbsorbCoeff * PathLength);
+			
+			
+			if( uni() > ProbTransmit )
+			{
+				continue;
+			}*/ 			
+			
+			
 			if(CCDCamera->GetPixelRayCCDIntersect(Source,Direction,
 												  RayLength,IntersectPoint,
 												  XIntersect,YIntersect,
@@ -88,15 +114,57 @@ public:
 					XRay.Source = Source;
 					XRay.Direction = Direction;
 					XRay.XPixel = XPixel;
-					XRay.Energy = Energy;					
+					XRay.Energy = Energy;
+					XRay.bIsNoise = false;
 					XRays.push_back(XRay);
 				}
 			}
 			
 			
 		}
+				
 		
-		DataFile.close();		
+		DataFile.close();
+		
+		
+		
+		//std::vector< Ray > NoiseXRays;
+		
+		//double NumSignalXRays = 60;
+		//double Noise = 0.05;
+		int NumNoiseXRays = 800;//= (Noise*NumSignalXRays)/(1.0-Noise);
+		
+		for( int i = 0; i < NumNoiseXRays; i++)
+		{
+			Ray Ray;
+			
+			/*Vector Source, Direction;
+			 int XPixel;
+			 double Energy;
+			 double BlurEnergy;
+			 bool PassPinhole;
+			 int PlaneId;*/
+			
+			
+			Ray.Energy = 5.564 + (uni()*(6.0565-5.564));
+			
+			/*const static double w = 0.00365; //average energy to produce eh pair in silicon
+			const static double r = 3; //readout noise
+			const static double F = 0.117; //Fano factor
+			double StDev = w*sqrt( r*r + (F*Ray.Energy)/w );
+			
+			Ray.BlurEnergy = normal()*StDev + Ray.Energy;*/
+			
+			Ray.XPixel = uni()*2047.0;
+			Ray.PassPinhole = true;
+			Ray.PlaneId = 0;
+			Ray.bIsNoise = true;
+			Ray.PassPinhole = true;
+			//Ray.yPixel = uni()*2047.0;
+			
+			XRays.push_back(Ray);
+		}
+		
 	}
 
 	struct BraggLimits
@@ -106,12 +174,12 @@ public:
 		double MaxE;
 	};
 	
-	std::vector< std::pair<double,double> >	CalculateCorrelations( PinholePlane* Pinhole, std::vector<BraggLimits> Limits)
+	std::vector< std::tuple<double,double,int> >	CalculateCorrelations( PinholePlane* Pinhole, std::vector<BraggLimits> Limits)
 	{
 	
 		std::vector< unsigned long int > SumX, NumXRays;
 		std::vector< double > SumY, SumXDiffSquare, SumYDiffSquare, SumYBlurDiffSquare, SumXYDiff, SumXYBlurDiff, SumYBlur;
-		std::vector< std::pair<double,double> > Correlations;
+		std::vector< std::tuple<double,double,int> > Correlations;
 		
 		
 		std::vector< double > XMean, YMean, YBlurMean;
@@ -123,7 +191,7 @@ public:
 			SumY.push_back(0.0); SumXDiffSquare.push_back(0.0); SumYDiffSquare.push_back(0.0);
 			SumXYDiff.push_back(0.0);
 			
-			Correlations.push_back( std::pair< double, double >(0.0,0.0) );
+			//Correlations.push_back( std::make_tuple< double, double >(0.0,0.0,0) );
 			
 			XMean.push_back(0);
 			YMean.push_back(0.0);
@@ -143,7 +211,7 @@ public:
 		//calculate correlation using a two pass algorithm as the single pass version can sometimes be unstable due to a very high number of XRays. 		
 		for( auto Ray = XRays.begin(); Ray != XRays.end(); ++Ray)
 		{
-			if( Pinhole->TestRayPinholeIntersect(Ray->Source, Ray->Direction, RayLength, IntersectPoint) )
+			if( Ray->bIsNoise || Pinhole->TestRayPinholeIntersect(Ray->Source, Ray->Direction, RayLength, IntersectPoint))
 			{
 				Ray->PassPinhole = true;
 				
@@ -157,6 +225,8 @@ public:
 				}				
 				
 				Ray->PlaneId = PlaneId;
+				
+				
 				
 				int X = Ray->XPixel;
 				double Y = Ray->Energy;
@@ -178,6 +248,8 @@ public:
 				Ray->PassPinhole = false;
 			}
 		}
+				
+		
 		
 		for( int i = 0; i < Limits.size(); i++)
 		{
@@ -212,16 +284,27 @@ public:
 			double r = SumXYDiff[i]/sqrt( SumXDiffSquare[i] * SumYDiffSquare[i] );
 			double r2 = SumXYBlurDiff[i]/sqrt( SumXDiffSquare[i] * SumYBlurDiffSquare[i] );
 			
-			Correlations[i].first = r;
-			Correlations[i].second = r2;
+			//Correlations[i][0] = r;
+			//Correlations[i][1] = r2;
+			
+			
+			/*if( NumXRays[i] < 10)
+			{
+				Correlations[i].first = 0.0;
+				Correlations[i].second = 0.0;
+			}*/
+			
+			Correlations.push_back(std::make_tuple(r,r2,NumXRays[i]));			
 		}
-				
+			
+			
+		
 		return Correlations;
 	}
 
 };
 
-void ProcessFileNormal( const char* InputFileName, const char* OutputFileName, AbsorbCoeffData* FilterAbsorbData, CCD* CCDCamera,
+void ProcessFileNormal( const char* InputFileName, const char* OutputFileName, AbsorbCoeffDataEnergy* FilterAbsorbData, CCD* CCDCamera,
 				 double FilterThickness, PinholePlane* Pinhole, FluorescenceData* FilterFluoData)
 {	
 	ifstream DataFile;
@@ -258,7 +341,7 @@ void ProcessFileNormal( const char* InputFileName, const char* OutputFileName, A
 		stringstream linestream(dataline);
 		linestream >> Source.x >> Source.y >> Direction.x >> Direction.y >> Direction.z >> Energy;
 
-		double AbsorbCoeff = FilterAbsorbData->GetAbsorbCoeffDataPoint(EnergyToWavelength(Energy));
+		double AbsorbCoeff = FilterAbsorbData->GetAbsorbCoeffDataPointEnergy(Energy);
 	
         double CosTheta = fabs(Direction.Dot(FilterNormal)); //fabs for anti-parallel.
 		
@@ -326,7 +409,7 @@ void ProcessFileNormal( const char* InputFileName, const char* OutputFileName, A
 			
 			double RemainingLength = PathLength - AbsorptionLength;
 						
-			float AbsorbCoeffFluo = FilterAbsorbData->GetAbsorbCoeffDataPoint(EnergyToWavelength(FluoEnergy));
+			float AbsorbCoeffFluo = FilterAbsorbData->GetAbsorbCoeffDataPointEnergy(FluoEnergy);
 			
 			float ProbFluoTransmit = exp( -1.0f * AbsorbCoeffFluo * RemainingLength  );
 			
@@ -406,7 +489,7 @@ int main(int argc, char *argv[])
     DoubleFromMap("MinEnergy", InputData, MinE);
     DoubleFromMap("MaxEnergy", InputData, MaxE);
     
-    double MinWavelength = EnergyToWavelength(MaxE); MinWavelength -= MinWavelength*0.02;
+    /*double MinWavelength = EnergyToWavelength(MaxE); MinWavelength -= MinWavelength*0.02;
     double MaxWavelength = EnergyToWavelength(MinE);
     
     if( MaxWavelength < EnergyToWavelength(0.1) )
@@ -414,13 +497,13 @@ int main(int argc, char *argv[])
         MaxWavelength = EnergyToWavelength(0.1);
     }
     
-    MaxWavelength += MaxWavelength*0.02;
+    MaxWavelength += MaxWavelength*0.02;*/
     
 	std::string FilterMuDataFilename;
 	
-	StringFromMap("FilterAbsorbData", InputData, FilterMuDataFilename);
+	StringFromMap("FilterAbsorbData_Energy", InputData, FilterMuDataFilename);
 	
-    AbsorbCoeffData MuData( MinWavelength, MaxWavelength, 1, 10000, FilterMuDataFilename.c_str());
+    AbsorbCoeffDataEnergy MuData( 0.1, MaxE, 10000, FilterMuDataFilename.c_str());
     
     Vector FilterNormal = PinholeNormal;
     FilterNormal = FilterNormal.Normalized();
@@ -462,11 +545,11 @@ int main(int argc, char *argv[])
 	
 	
 	if(bIterations)
-	{
-		PinholeFileParser DiffractParser("AdvDiffractResults.txt", &CCDCamera );
-		PinholeFileParser FluoParser("AdvFluoResults.txt", &CCDCamera );
+	{		
+		//PinholeFileParser FluoParser("AdvFluoResults.txt", &CCDCamera, &MuData, FilterThickness );
+		PinholeFileParser DiffractParser("AdvDiffractResults.txt", &CCDCamera, &MuData, FilterThickness );
 		
-		ifstream BraggLimitsFile( "DiffractionPeakLimits.txt", ios::in);
+		ifstream BraggLimitsFile( "DiffractionPeakLimits_112.txt", ios::in);
 		
 		if(BraggLimitsFile.is_open() == false)
 		{
@@ -531,7 +614,7 @@ int main(int argc, char *argv[])
 		
 		for( int PlaneId = 0; PlaneId < int(Limits.size()); PlaneId++ )
 		{
-			IterationOut << Limits[PlaneId].PlaneName << "\t\t";
+			IterationOut << Limits[PlaneId].PlaneName << "\t\t\t";
 		}
 		
 		IterationOut << "Noise";
@@ -552,16 +635,18 @@ int main(int argc, char *argv[])
 				
 				IterationOut << Radius << "\t" << Distance << "\t";
 				
-				std::vector< std::pair<double,double> > Correlations = DiffractParser.CalculateCorrelations(&VariablePinhole, Limits );
-				std::vector< std::pair<double,double> > NoiseCorrelations = FluoParser.CalculateCorrelations(&VariablePinhole, NoiseLimits );
+				std::vector< std::tuple<double,double,int> > Correlations = DiffractParser.CalculateCorrelations(&VariablePinhole, Limits );
+				//std::vector< std::pair<double,double> > NoiseCorrelations = FluoParser.CalculateCorrelations(&VariablePinhole, NoiseLimits );
 				
 				for( int PlaneId = 0; PlaneId < int(Limits.size()); PlaneId++ )
 				{
-					IterationOut << Correlations[PlaneId].first << "\t" << Correlations[PlaneId].second << "\t";
+					IterationOut << std::get<0>(Correlations[PlaneId]) << "\t" <<
+									std::get<1>(Correlations[PlaneId]) << "\t" <<
+									std::get<2>(Correlations[PlaneId]) << "\t";
 				}
 				
 				
-				IterationOut << NoiseCorrelations[0].first << "\t" << NoiseCorrelations[0].second;
+				//IterationOut << NoiseCorrelations[0].first << "\t" << NoiseCorrelations[0].second;
 				
 				IterationOut << endl;
 			}
@@ -573,7 +658,7 @@ int main(int argc, char *argv[])
 			if( Progress >= ProgressCounter)
 			{
 				printf( "Progress: %.0f%%\n",Progress*100.0);
-				ProgressCounter += 0.1;
+				ProgressCounter += 0.01;
 			}
 			
 		}
